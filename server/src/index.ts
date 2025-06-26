@@ -5,7 +5,8 @@ import { auth } from "./auth";
 import "dotenv/config";
 import Stripe from "stripe";
 import { HTTPException } from "hono/http-exception";
-import Database from "better-sqlite3";
+import ollama from "ollama";
+import { addTokensToUser, reduceUserTokens } from "./utils/tokenUpdates";
 
 type Session = {
   session: any;
@@ -14,32 +15,6 @@ type Session = {
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2025-05-28.basil",
 });
-
-// Initialize database connection for token updates
-const db = new Database("./sqlite.db");
-
-// Function to add tokens to user
-const addTokensToUser = (userId: string, tokenAmount: number) => {
-  try {
-    // Update user tokens in database
-    const stmt = db.prepare(`
-      UPDATE user 
-      SET tokens = tokens + ?, updatedAt = datetime('now') 
-      WHERE id = ?
-    `);
-    const result = stmt.run(tokenAmount, userId);
-
-    if (result.changes === 0) {
-      throw new Error(`User with ID ${userId} not found`);
-    }
-
-    console.log(`Added ${tokenAmount} tokens to user ${userId}`);
-    return result;
-  } catch (error) {
-    console.error("Error adding tokens to user:", error);
-    throw error;
-  }
-};
 
 const app = new Hono<{ Variables: Session }>();
 
@@ -150,6 +125,70 @@ app.post("/webhook", async (c) => {
   } catch (error) {
     console.error("Webhook error:", error);
     return c.text("Webhook error", 500);
+  }
+});
+
+app.post("/ask", requireAuth, async (c) => {
+  const query = await c.req.json();
+  const session = c.get("session");
+
+  try {
+    const response = await ollama.chat({
+      model: "crab-llama",
+      messages: [
+        {
+          role: "user",
+          content: query.question,
+        },
+      ],
+      stream: true,
+    });
+
+    // Set headers for Server-Sent Events
+    c.header("Content-Type", "text/plain; charset=utf-8");
+    c.header("Cache-Control", "no-cache");
+    c.header("Connection", "keep-alive");
+
+    // Create a readable stream
+    const stream = new ReadableStream({
+      async start(controller) {
+        try {
+          for await (const part of response) {
+            const chunk = part.message.content;
+            if (chunk) {
+              controller.enqueue(new TextEncoder().encode(chunk));
+
+              // Force flush by adding a small delay
+              await new Promise((resolve) => setTimeout(resolve, 10));
+            }
+          }
+
+          try {
+            reduceUserTokens(session.user.id);
+          } catch (tokenError) {
+            console.error("Failed to reduce user tokens:", tokenError);
+          }
+
+          controller.close();
+        } catch (error) {
+          controller.error(error);
+        }
+      },
+    });
+
+    return new Response(stream, {
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Cache-Control": "no-cache",
+        Connection: "keep-alive",
+        "Transfer-Encoding": "chunked", // Force chunked encoding
+      },
+    });
+  } catch (error) {
+    console.error("Error in /ask endpoint:", error);
+    throw new HTTPException(500, {
+      message: "Internal Server Error",
+    });
   }
 });
 

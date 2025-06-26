@@ -1,6 +1,7 @@
 import { signOut, useSession } from "./lib/auth-client";
 import { Auth } from "./components/Auth";
 import { Nav } from "./components/Nav";
+import { Chat } from "./components/Chat";
 
 function App() {
   const { data: session, isPending } = useSession();
@@ -16,7 +17,8 @@ function App() {
       <h1 className="text-2xl font-bold mb-6">My App</h1>
       {session ? (
         <div>
-          <p className="mb-4">Welcome, {session.user?.name || "User"}!</p>
+          <p className="mb-4">Welcome, {session.user?.name || "Username"}!</p>
+          <Chat />
           <button
             className="bg-red-500 text-white px-4 py-2 rounded"
             onClick={() => signOut()}
