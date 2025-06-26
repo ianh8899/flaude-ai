@@ -4,6 +4,7 @@ import { Nav } from "./components/Nav";
 
 function App() {
   const { data: session, isPending } = useSession();
+  console.log("Session Data:", session);
 
   if (isPending) {
     return <div>Loading...</div>;
@@ -11,7 +12,7 @@ function App() {
 
   return (
     <div className="p-12 flex flex-col items-center align-center justify-center min-h-screen">
-      <Nav />
+      <Nav session={session} />
       <h1 className="text-2xl font-bold mb-6">My App</h1>
       {session ? (
         <div>

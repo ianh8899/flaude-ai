@@ -15,9 +15,41 @@ async function handleCheckout() {
   await stripe?.redirectToCheckout({ sessionId: stripeSession.id });
 }
 
-export const Nav = () => {
+// Define a custom type for the user with tokens
+interface UserWithTokens {
+  id: string;
+  name: string;
+  email: string;
+  tokens?: number;
+  [key: string]: unknown;
+}
+
+interface SessionData {
+  user: UserWithTokens;
+  session: {
+    id: string;
+    token: string;
+    userId: string;
+    expiresAt: Date;
+    createdAt: Date;
+    updatedAt: Date;
+    ipAddress?: string | null;
+    userAgent?: string | null;
+  };
+}
+
+interface NavProps {
+  session: SessionData | null;
+}
+
+export const Nav = ({ session }: NavProps) => {
+  if (!session) {
+    return <></>;
+  }
+
   return (
     <>
+      <p>Tokens available: {session.user?.tokens || 0}</p>
       <button onClick={handleCheckout}>Checkout</button>
     </>
   );

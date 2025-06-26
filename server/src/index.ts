@@ -5,6 +5,7 @@ import { auth } from "./auth";
 import "dotenv/config";
 import Stripe from "stripe";
 import { HTTPException } from "hono/http-exception";
+import Database from "better-sqlite3";
 
 type Session = {
   session: any;
@@ -13,6 +14,32 @@ type Session = {
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2025-05-28.basil",
 });
+
+// Initialize database connection for token updates
+const db = new Database("./sqlite.db");
+
+// Function to add tokens to user
+const addTokensToUser = (userId: string, tokenAmount: number) => {
+  try {
+    // Update user tokens in database
+    const stmt = db.prepare(`
+      UPDATE user 
+      SET tokens = tokens + ?, updatedAt = datetime('now') 
+      WHERE id = ?
+    `);
+    const result = stmt.run(tokenAmount, userId);
+
+    if (result.changes === 0) {
+      throw new Error(`User with ID ${userId} not found`);
+    }
+
+    console.log(`Added ${tokenAmount} tokens to user ${userId}`);
+    return result;
+  } catch (error) {
+    console.error("Error adding tokens to user:", error);
+    throw error;
+  }
+};
 
 const app = new Hono<{ Variables: Session }>();
 
@@ -75,6 +102,7 @@ app.post("/checkout", requireAuth, async (c) => {
       metadata: {
         userId: session.user.id,
         userEmail: session.user.email,
+        quantity: 1,
       },
     });
     return c.json(stripeSession);
@@ -107,7 +135,14 @@ app.post("/webhook", async (c) => {
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
       console.log("Checkout session completed:", session);
-      // Handle successful checkout session here
+      if (session?.metadata) {
+        addTokensToUser(
+          session.metadata.userId,
+          parseInt(session.metadata.quantity)
+        );
+      } else {
+        console.warn("Session metadata is missing required fields.");
+      }
     } else {
       console.warn("Unhandled event type:", event.type);
     }
