@@ -1,5 +1,6 @@
 import { signOut, useSession } from "./lib/auth-client";
 import { Auth } from "./components/Auth";
+import { Nav } from "./components/Nav";
 
 function App() {
   const { data: session, isPending } = useSession();
@@ -10,6 +11,7 @@ function App() {
 
   return (
     <div className="p-12 flex flex-col items-center align-center justify-center min-h-screen">
+      <Nav />
       <h1 className="text-2xl font-bold mb-6">My App</h1>
       {session ? (
         <div>

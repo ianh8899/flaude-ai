@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@stripe/react-stripe-js": "^3.7.0",
+    "@stripe/stripe-js": "^7.4.0",
     "@tailwindcss/vite": "^4.1.10",
     "autoprefixer": "^10.4.21",
     "react": "^19.1.0",
