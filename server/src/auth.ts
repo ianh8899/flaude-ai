@@ -7,8 +7,11 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
-
-  trustedOrigins: ["http://localhost:5173"],
+  trustedOrigins: [
+    "http://localhost:5173",
+    "http://localhost:4173",
+    process.env.FRONTEND_URL!,
+  ],
   socialProviders: {
     github: {
       clientId: process.env.GITHUB_CLIENT_ID!,

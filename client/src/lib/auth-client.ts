@@ -1,7 +1,16 @@
-import { createAuthClient } from "better-auth/react"
-export const authClient = createAuthClient({
-    /** The base URL of the server (optional if you're using the same domain) */
-    baseURL: "http://localhost:3000"
-})
+import { createAuthClient } from "better-auth/react";
 
-export const { signIn, signUp, useSession, signOut} = authClient
+const getBaseURL = () => {
+  // If running locally, use localhost
+  if (window.location.hostname === "localhost") {
+    return "http://localhost:3000";
+  }
+  // If in production, use your tunneled backend
+  return "https://webhooks.ianhitchman.co.uk";
+};
+
+export const authClient = createAuthClient({
+  baseURL: getBaseURL(),
+});
+
+export const { signIn, signUp, useSession, signOut } = authClient;

@@ -21,7 +21,12 @@ const app = new Hono<{ Variables: Session }>();
 app.use(
   "*",
   cors({
-    origin: ["http://localhost:5173", process.env.WEBHOOK_URL!],
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:4173",
+      process.env.WEBHOOK_URL!,
+      process.env.FRONTEND_URL!,
+    ],
     credentials: true,
     allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   })
@@ -134,7 +139,7 @@ app.post("/ask", requireAuth, async (c) => {
 
   try {
     const response = await ollama.chat({
-      model: "crab-llama",
+      model: "tinyllama",
       messages: [
         {
           role: "user",
