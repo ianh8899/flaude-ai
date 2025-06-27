@@ -64,7 +64,7 @@ export const Auth = () => {
             onClick={() => {
               signIn.social({
                 provider: "github",
-                callbackURL: "http://localhost:5173",
+                callbackURL: `${import.meta.env.VITE_FRONTEND_URL}`,
               });
             }}
           >
@@ -126,7 +126,7 @@ export const Auth = () => {
             onClick={() => {
               signIn.social({
                 provider: "github",
-                callbackURL: "http://localhost:5173",
+                callbackURL: `${import.meta.env.VITE_FRONTEND_URL}`,
               });
             }}
           >

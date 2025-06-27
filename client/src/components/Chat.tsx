@@ -20,7 +20,7 @@ export const Chat = () => {
     }
 
     try {
-      const res = await fetch("http://localhost:3000/ask", {
+      const res = await fetch(`${import.meta.env.VITE_FRONTEND_URL}/api/ask`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -33,9 +33,11 @@ app.use(
 );
 
 // Mount better-auth
-app.on(["POST", "GET"], "/api/auth/**", (c) => auth.handler(c.req.raw));
+app.on(["POST", "GET"], "/api/auth/**", (c) => {
+  return auth.handler(c.req.raw);
+});
 
-app.get("/", (c) => {
+app.get("/api", (c) => {
   return c.text("Hello Hono!");
 });
 
@@ -56,17 +58,16 @@ const requireAuth = async (c: any, next: any) => {
     c.set("session", session);
     await next();
   } catch (error) {
+    console.error("Auth middleware error:", error);
     throw new HTTPException(401, {
       message: "Invalid session",
     });
   }
 };
 
-app.post("/checkout", requireAuth, async (c) => {
+app.post("/api/checkout", requireAuth, async (c) => {
   try {
     const session = c.get("session");
-    console.log("User ID:", session.user.id);
-    console.log("User Email:", session.user.email);
 
     const stripeSession = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
@@ -77,8 +78,8 @@ app.post("/checkout", requireAuth, async (c) => {
         },
       ],
       mode: "payment",
-      success_url: "http://localhost:5173",
-      cancel_url: "http://localhost:5173/cancel",
+      success_url: `${process.env.FRONTEND_URL}`,
+      cancel_url: `${process.env.FRONTEND_URL}/cancel`,
       metadata: {
         userId: session.user.id,
         userEmail: session.user.email,
@@ -93,7 +94,7 @@ app.post("/checkout", requireAuth, async (c) => {
   }
 });
 
-app.post("/webhook", async (c) => {
+app.post("/api/webhook", async (c) => {
   try {
     const rawBody = await c.req.text();
     const sig = c.req.header("stripe-signature");
@@ -114,11 +115,10 @@ app.post("/webhook", async (c) => {
 
     if (event.type === "checkout.session.completed") {
       const session = event.data.object;
-      console.log("Checkout session completed:", session);
       if (session?.metadata) {
         addTokensToUser(
           session.metadata.userId,
-          parseInt(session.metadata.quantity) * 100 // Assuming quantity is in dollars, convert to cents
+          parseInt(session.metadata.quantity) * 100
         );
       } else {
         console.warn("Session metadata is missing required fields.");
@@ -133,7 +133,7 @@ app.post("/webhook", async (c) => {
   }
 });
 
-app.post("/ask", requireAuth, async (c) => {
+app.post("/api/ask", requireAuth, async (c) => {
   const query = await c.req.json();
   const session = c.get("session");
 

@@ -4,13 +4,16 @@ import { signOut } from "../lib/auth-client";
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY!);
 
 async function handleCheckout() {
-  const response = await fetch("http://localhost:3000/checkout", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  });
+  const response = await fetch(
+    `${import.meta.env.VITE_FRONTEND_URL}/api/checkout`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    }
+  );
   const stripeSession = await response.json();
   const stripe = await stripePromise;
   await stripe?.redirectToCheckout({ sessionId: stripeSession.id });

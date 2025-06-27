@@ -8,4 +8,10 @@ export default defineConfig({
     host: true,
     allowedHosts: true,
   },
+  server: {
+    allowedHosts: [
+      'localhost',
+      'client.ianhitchman.co.uk'
+    ],
+  },
 });

@@ -5,8 +5,8 @@ const getBaseURL = () => {
   if (window.location.hostname === "localhost") {
     return "http://localhost:3000";
   }
-  // If in production, use your tunneled backend
-  return "https://webhooks.ianhitchman.co.uk";
+  // Use the same domain but point to /api
+  return `${import.meta.env.VITE_FRONTEND_URL}/api/auth`;
 };
 
 export const authClient = createAuthClient({
