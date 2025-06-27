@@ -157,9 +157,6 @@ app.post("/ask", requireAuth, async (c) => {
             const chunk = part.message.content;
             if (chunk) {
               controller.enqueue(new TextEncoder().encode(chunk));
-
-              // Force flush by adding a small delay
-              await new Promise((resolve) => setTimeout(resolve, 10));
             }
           }
 
