@@ -80,8 +80,11 @@ export const Chat = () => {
         )}
       </div>
       <div>
-        <h2 className="text-xl font-bold mb-4">Chat with Llama</h2>
-        <p className="mb-4">Type your message below:</p>
+        <h2 className="text-xl font-bold mb-4">Chat with Crab-GPT</h2>
+        <p className="mb-4">
+          Don't worry this crab has really poor memory and often forgets it's a
+          crab. Type your message below:
+        </p>
       </div>
       <form onSubmit={handleSubmit(llamaRequest)}>
         <input
@@ -93,7 +96,7 @@ export const Chat = () => {
         />
         <button
           type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded w-full disabled:bg-gray-400"
+          className="bg-blue-500 text-white px-4 py-2 rounded disabled:bg-gray-400"
           disabled={isLoading}
         >
           {isLoading ? "Sending..." : "Send"}

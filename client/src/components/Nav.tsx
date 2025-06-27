@@ -1,4 +1,5 @@
 import { loadStripe } from "@stripe/stripe-js";
+import { signOut } from "../lib/auth-client";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY!);
 
@@ -48,9 +49,15 @@ export const Nav = ({ session }: NavProps) => {
   }
 
   return (
-    <>
+    <div className="flex flex-row justify-center gap-12 items-center pt-6">
       <p>Tokens available: {session.user?.tokens || 0}</p>
-      <button onClick={handleCheckout}>Checkout</button>
-    </>
+      <button onClick={handleCheckout}>Buy More Tokens</button>
+      <button
+        className="bg-red-500 text-white px-4 py-2 rounded"
+        onClick={() => signOut()}
+      >
+        Sign Out
+      </button>
+    </div>
   );
 };

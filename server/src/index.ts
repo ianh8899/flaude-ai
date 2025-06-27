@@ -21,7 +21,7 @@ const app = new Hono<{ Variables: Session }>();
 app.use(
   "*",
   cors({
-    origin: ["http://localhost:5173"],
+    origin: ["http://localhost:5173", process.env.WEBHOOK_URL!],
     credentials: true,
     allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   })
@@ -113,7 +113,7 @@ app.post("/webhook", async (c) => {
       if (session?.metadata) {
         addTokensToUser(
           session.metadata.userId,
-          parseInt(session.metadata.quantity)
+          parseInt(session.metadata.quantity) * 100 // Assuming quantity is in dollars, convert to cents
         );
       } else {
         console.warn("Session metadata is missing required fields.");
