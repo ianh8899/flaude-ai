@@ -15,15 +15,7 @@ function App() {
     <div>
       <Nav session={session} />
       <div className="p-12 flex flex-col items-center align-center justify-center min-h-screen">
-        <h1 className="text-2xl font-bold mb-6">Welcome to Crab-GPT</h1>
-        {session ? (
-          <div>
-            <p className="mb-4">Welcome, {session.user?.name || "Username"}!</p>
-            <Chat />
-          </div>
-        ) : (
-          <Auth />
-        )}
+        {session ? <Chat username={session.user.name} /> : <Auth />}
       </div>
     </div>
   );

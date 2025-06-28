@@ -1,14 +1,39 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --font-inter: "Inter", ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-inter), "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
   line-height: 1.5;
   font-weight: 400;
+  background-color: rgb(38, 38, 36);
+  color: rgb(250, 249, 245);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.heading {
+  font-family: "Crimson Text", Georgia, "Times New Roman", Times, serif;
+  font-feature-settings: "ss01" 0;
+  font-size: 40px;
+  font-weight: 400;
+  color: rgb(194, 192, 182);
+  height: 60px;
+  letter-spacing: -1.4px;
+  line-height: 60px;
+  text-align: center;
+  text-overflow: ellipsis;
+  user-select: none;
+  vertical-align: middle;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+  white-space: nowrap;
 }

@@ -24,8 +24,7 @@ app.use(
     origin: [
       "http://localhost:5173",
       "http://localhost:4173",
-      process.env.WEBHOOK_URL!,
-      process.env.FRONTEND_URL!,
+      process.env.PROD_URL!,
     ],
     credentials: true,
     allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -78,8 +77,8 @@ app.post("/api/checkout", requireAuth, async (c) => {
         },
       ],
       mode: "payment",
-      success_url: `${process.env.FRONTEND_URL}`,
-      cancel_url: `${process.env.FRONTEND_URL}/cancel`,
+      success_url: `${process.env.PROD_URL}`,
+      cancel_url: `${process.env.PROD_URL}/cancel`,
       metadata: {
         userId: session.user.id,
         userEmail: session.user.email,

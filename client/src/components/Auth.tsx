@@ -54,17 +54,17 @@ export const Auth = () => {
             </div>
             <button
               type="submit"
-              className="bg-blue-500 text-white px-4 py-2 rounded w-full"
+              className="bg-custom-orange hover:bg-orange-700 px-4 py-2 rounded w-full"
             >
               Sign In
             </button>
           </form>
           <button
-            className="mt-4 bg-gray-800 text-white px-4 py-2 rounded w-full"
+            className="mt-4 bg-black hover:bg-slate-900 px-4 py-2 rounded w-full"
             onClick={() => {
               signIn.social({
                 provider: "github",
-                callbackURL: `${import.meta.env.VITE_FRONTEND_URL}`,
+                callbackURL: `${import.meta.env.VITE_PROD_URL}`,
               });
             }}
           >
@@ -116,17 +116,17 @@ export const Auth = () => {
             </div>
             <button
               type="submit"
-              className="bg-green-500 text-white px-4 py-2 rounded w-full"
+              className="bg-custom-orange hover:bg-orange-700 px-4 py-2 rounded w-full"
             >
               Sign Up
             </button>
           </form>
           <button
-            className="mt-4 bg-gray-800 text-white px-4 py-2 rounded w-full"
+            className="mt-4 bg-black hover:bg-slate-900 px-4 py-2 rounded w-full"
             onClick={() => {
               signIn.social({
                 provider: "github",
-                callbackURL: `${import.meta.env.VITE_FRONTEND_URL}`,
+                callbackURL: `${import.meta.env.VITE_PROD_URL}`,
               });
             }}
           >
@@ -135,7 +135,7 @@ export const Auth = () => {
         </div>
       )}
       <button
-        className="mt-4 text-blue-500 underline"
+        className="mt-4 text-custom-orange underline"
         onClick={() => setShowSignIn(!showSignIn)}
       >
         {showSignIn

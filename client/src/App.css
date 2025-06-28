@@ -1,3 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400&display=swap");
 
-
-
+.heading {
+  font-family: "Crimson Text", Georgia, "Times New Roman", Times, serif;
+  font-feature-settings: "ss01" 0;
+  font-size: 40px;
+  font-weight: 400;
+  height: 60px;
+  letter-spacing: -1.4px;
+  line-height: 60px;
+  text-align: center;
+  text-overflow: ellipsis;
+  user-select: none;
+  vertical-align: middle;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+  white-space: nowrap;
+}

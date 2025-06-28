@@ -10,7 +10,7 @@ export const auth = betterAuth({
   trustedOrigins: [
     "http://localhost:5173",
     "http://localhost:4173",
-    process.env.FRONTEND_URL!,
+    process.env.PROD_URL!,
   ],
   socialProviders: {
     github: {

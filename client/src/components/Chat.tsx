@@ -3,8 +3,11 @@ import { useState, useRef } from "react";
 import { useSession } from "../lib/auth-client";
 
 type ChatFormInputs = { message: string };
+type ChatProps = {
+  username: string;
+};
 
-export const Chat = () => {
+export const Chat = ({ username }: ChatProps) => {
   const { register, handleSubmit, reset } = useForm<ChatFormInputs>();
   const [isLoading, setIsLoading] = useState(false);
   const [displayResponse, setDisplayResponse] = useState(false);
@@ -20,7 +23,7 @@ export const Chat = () => {
     }
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_FRONTEND_URL}/api/ask`, {
+      const res = await fetch(`${import.meta.env.VITE_PROD_URL}/api/ask`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -67,41 +70,46 @@ export const Chat = () => {
   };
 
   return (
-    <>
+    <div className="">
       <div>
+        <div>
+          <h1 className="heading mb-4">Hi {username}, how are you?</h1>
+        </div>
         {displayResponse ? (
           <p
             ref={responseRef}
             id="response"
-            className="mb-4 p-4 border rounded bg-gray-50 min-h-[100px] whitespace-pre-wrap"
+            className="mb-4 p-4 bg-chat-grey min-h-[100px] whitespace-pre-wrap rounded-xl"
           ></p>
         ) : (
           <></>
+          // <div>
+          //   <h2 className="text-xl font-bold mb-4">Chat with Crab-GPT</h2>
+          //   <p className="mb-4">
+          //     Don't worry this crab has really poor memory and often forgets
+          //     it's a crab. Type your message below:
+          //   </p>
+          // </div>
         )}
       </div>
-      <div>
-        <h2 className="text-xl font-bold mb-4">Chat with Crab-GPT</h2>
-        <p className="mb-4">
-          Don't worry this crab has really poor memory and often forgets it's a
-          crab. Type your message below:
-        </p>
-      </div>
-      <form onSubmit={handleSubmit(llamaRequest)}>
+      <form onSubmit={handleSubmit(llamaRequest)} className="flex flex-col">
         <input
           type="text"
           placeholder="Type your message"
-          className="w-full px-3 py-2 border rounded mb-4"
+          className="w-full px-3 py-2 border border-custom-grey rounded mb-4 bg-background-grey"
           {...register("message", { required: true })}
           disabled={isLoading}
         />
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded disabled:bg-gray-400"
-          disabled={isLoading}
-        >
-          {isLoading ? "Sending..." : "Send"}
-        </button>
+        <div className="flex justify-end">
+          <button
+            type="submit"
+            className="bg-custom-orange px-4 py-2 rounded disabled:bg-chat-grey"
+            disabled={isLoading}
+          >
+            {isLoading ? "Sending..." : "Send"}
+          </button>
+        </div>
       </form>
-    </>
+    </div>
   );
 };
