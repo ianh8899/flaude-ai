@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc",
+    "build": "npx esbuild src/index.ts scr/auth.ts src/utils/tokenUpdate.ts --platform=node --target=node18 --outdir=dist --packages=extrernal",
     "start": "node dist/index.js"
   },
   "dependencies": {
