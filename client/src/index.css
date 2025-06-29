@@ -26,14 +26,21 @@
   font-size: 40px;
   font-weight: 400;
   color: rgb(194, 192, 182);
-  height: 60px;
+  height: auto;
   letter-spacing: -1.4px;
-  line-height: 60px;
+  line-height: 45px;
   text-align: center;
   text-overflow: ellipsis;
   user-select: none;
   vertical-align: middle;
   -webkit-font-smoothing: antialiased;
-  overflow: hidden;
-  white-space: nowrap;
+  overflow: visible;
+  white-space: normal;
+}
+
+@media (min-width: 768px) {
+  .heading {
+    white-space: nowrap;
+    overflow: hidden;
+  }
 }

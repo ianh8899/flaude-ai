@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { signIn, signUp } from "../lib/auth-client";
+import { RxEnter } from "react-icons/rx";
+import { FaCircleArrowUp, FaGithub } from "react-icons/fa6";
 
 export const Auth = () => {
   type SignInForm = { email: string; password: string };
@@ -23,9 +25,11 @@ export const Auth = () => {
 
   return (
     <div className="p-6 flex flex-col items-center">
+      <h1 className="heading mb-2">Your ideas, ruined.</h1>
+      <p>A terrible Ai that rarely helps you create anything useful</p>
       {showSignIn ? (
-        <div>
-          <h2 className="text-xl font-bold mb-4 text-center">Sign In</h2>
+        <div className="border border-custom-grey p-6 rounded-2xl max-w[80%] max-w-md mt-8">
+          {/* <h2 className="text-xl font-bold mb-4 text-center">Sign In</h2> */}
           <form className="space-y-4" onSubmit={handleSubmit(onSubmitSignIn)}>
             <div>
               <label className="block text-sm font-medium mb-1" htmlFor="email">
@@ -34,7 +38,7 @@ export const Auth = () => {
               <input
                 id="email"
                 type="email"
-                className="w-full px-3 py-2 border rounded"
+                className="w-full px-3 py-2 border rounded text-black"
                 {...register("email", { required: true })}
               />
             </div>
@@ -48,7 +52,7 @@ export const Auth = () => {
               <input
                 id="password"
                 type="password"
-                className="w-full px-3 py-2 border rounded"
+                className="w-full px-3 py-2 border rounded text-black"
                 {...register("password", { required: true })}
               />
             </div>
@@ -56,7 +60,7 @@ export const Auth = () => {
               type="submit"
               className="bg-custom-orange hover:bg-orange-700 px-4 py-2 rounded w-full"
             >
-              Sign In
+              Sign In <RxEnter className="inline-block ml-2" />
             </button>
           </form>
           <button
@@ -68,16 +72,17 @@ export const Auth = () => {
               });
             }}
           >
+            <FaGithub className="inline-block mr-2" />
             Sign In with GitHub
           </button>
         </div>
       ) : (
-        <div>
-          <h2 className="text-xl font-bold mb-4 text-center">Sign Up</h2>
+        <div className="border border-custom-grey p-6 rounded-2xl max-w[80%] max-w-md mt-8">
+          {/* <h2 className="text-xl font-bold mb-4 text-center">Sign Up</h2> */}
           <form className="space-y-4" onSubmit={handleSubmit(onSubmitSignUp)}>
             <div>
               <label
-                className="block text-sm font-medium mb-1"
+                className="block text-sm font-medium mb-1 "
                 htmlFor="signup-email"
               >
                 Email
@@ -85,7 +90,7 @@ export const Auth = () => {
               <input
                 id="signup-email"
                 type="email"
-                className="w-full px-3 py-2 border rounded"
+                className="w-full px-3 py-2 border rounded text-black"
                 {...register("email", { required: true })}
               />
             </div>
@@ -96,7 +101,7 @@ export const Auth = () => {
               <input
                 id="name"
                 type="text"
-                className="w-full px-3 py-2 border rounded"
+                className="w-full px-3 py-2 border rounded text-black"
                 {...register("name", { required: true })}
               />
             </div>
@@ -110,7 +115,7 @@ export const Auth = () => {
               <input
                 id="signup-password"
                 type="password"
-                className="w-full px-3 py-2 border rounded"
+                className="w-full px-3 py-2 border rounded text-black"
                 {...register("password", { required: true })}
               />
             </div>
@@ -118,7 +123,7 @@ export const Auth = () => {
               type="submit"
               className="bg-custom-orange hover:bg-orange-700 px-4 py-2 rounded w-full"
             >
-              Sign Up
+              Sign Up <FaCircleArrowUp className="inline-block ml-2" />
             </button>
           </form>
           <button
@@ -130,7 +135,7 @@ export const Auth = () => {
               });
             }}
           >
-            Sign Up with GitHub
+            <FaGithub className="inline-block mr-2" /> Sign Up with GitHub
           </button>
         </div>
       )}

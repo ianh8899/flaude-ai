@@ -1,5 +1,6 @@
 import { loadStripe } from "@stripe/stripe-js";
 import { signOut } from "../lib/auth-client";
+import { FaFaceRollingEyes } from "react-icons/fa6";
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY!);
 
@@ -48,7 +49,14 @@ interface NavProps {
 
 export const Nav = ({ session }: NavProps) => {
   if (!session) {
-    return <></>;
+    return (
+      <div className="flex flex-col items-center mt-12">
+        <h1 className="text-2xl">
+          <FaFaceRollingEyes className="inline-block mr-2 -mt-1 text-custom-orange" />
+          Flaude
+        </h1>
+      </div>
+    );
   }
 
   return (

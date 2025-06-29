@@ -70,7 +70,7 @@ export const Chat = ({ username }: ChatProps) => {
   };
 
   return (
-    <div className="">
+    <div className="max-w-full md:max-w-[60%]">
       <div>
         <div>
           <h1 className="heading mb-4">Hi {username}, how are you?</h1>
@@ -83,13 +83,6 @@ export const Chat = ({ username }: ChatProps) => {
           ></p>
         ) : (
           <></>
-          // <div>
-          //   <h2 className="text-xl font-bold mb-4">Chat with Crab-GPT</h2>
-          //   <p className="mb-4">
-          //     Don't worry this crab has really poor memory and often forgets
-          //     it's a crab. Type your message below:
-          //   </p>
-          // </div>
         )}
       </div>
       <form onSubmit={handleSubmit(llamaRequest)} className="flex flex-col">
