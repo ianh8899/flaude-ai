@@ -2,9 +2,9 @@
   "compilerOptions": {
     "target": "ES2022",
     "module": "ESNext",
-    "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
-    "noEmit": true,
+    "moduleResolution": "node",
+    "allowImportingTsExtensions": false,
+    "noEmit": false,
     "strict": true,
     "skipLibCheck": true,
     "esModuleInterop": true,

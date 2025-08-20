@@ -1,12 +1,12 @@
 import { Hono } from "hono";
 import { serve } from "@hono/node-server";
 import { cors } from "hono/cors";
-import { auth } from "./auth";
+import { auth } from "./auth.js";
 import "dotenv/config";
 import Stripe from "stripe";
 import { HTTPException } from "hono/http-exception";
 import ollama from "ollama";
-import { addTokensToUser, reduceUserTokens } from "./utils/tokenUpdates";
+import { addTokensToUser, reduceUserTokens } from "./utils/tokenUpdates.js";
 
 type Session = {
   session: any;

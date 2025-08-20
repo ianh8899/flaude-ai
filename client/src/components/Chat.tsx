@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useSession } from "../lib/auth-client";
 
 type ChatFormInputs = { message: string };
@@ -10,9 +10,28 @@ type ChatProps = {
 export const Chat = ({ username }: ChatProps) => {
   const { register, handleSubmit, reset } = useForm<ChatFormInputs>();
   const [isLoading, setIsLoading] = useState(false);
+  const [showExtendedMessage, setShowExtendedMessage] = useState(false);
   const [displayResponse, setDisplayResponse] = useState(false);
   const { refetch } = useSession();
   const responseRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    let timeout: NodeJS.Timeout;
+    
+    if (isLoading) {
+      timeout = setTimeout(() => {
+        setShowExtendedMessage(true);
+      }, 3000);
+    } else {
+      setShowExtendedMessage(false);
+    }
+
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    };
+  }, [isLoading]);
 
   const llamaRequest = async (data: { message: string }) => {
     setIsLoading(true);
@@ -99,7 +118,9 @@ export const Chat = ({ username }: ChatProps) => {
             className="bg-custom-orange px-4 py-2 rounded disabled:bg-chat-grey"
             disabled={isLoading}
           >
-            {isLoading ? "Sending..." : "Send"}
+            {isLoading 
+              ? (showExtendedMessage ? "Sending... this can take a while" : "Sending...") 
+              : "Send"}
           </button>
         </div>
       </form>
